@@ -1,0 +1,71 @@
+# Verion of docker-compose to use 
+version: "1"
+
+services:
+
+  db:
+    container_name: database
+    image: postgres:12-alpine # Use PostgreSQL version 12
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=test
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    #working_dir : /app
+    container_name: backend
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: /home/ubuntu/project/react-django-app/server
+      dockerfile: Dockerfile
+
+    # Maps port on the local machine to port on Docker image
+    ports:
+      - 8000:8000
+
+    volumes:
+      # Copy changes made to the project to your image in real-time.
+      - /home/ubuntu/project/react-django-app/server:/app
+    # Handles the command used to run the project in the Docker container.
+    command: sh "/app/entrypoint.sh"
+
+  frontend:
+    container_name: frontend
+    depends_on:
+      backend:
+        condition: service_started
+    build:
+      context: /home/ubuntu/project/react-django-app/client
+      dockerfile: Dockerfile
+
+    # Maps port on the local machine to port on Docker image
+    ports:
+      - 3000:3000
+
+  nginx:
+    container_name: nginx
+    depends_on:
+      frontend:
+        condition: service_started
+    build:
+      context: /home/ubuntu/project/react-django-app/nginx
+      dockerfile: Dockerfile
+
+    volumes:
+      - /home/ubuntu/project/react-django-app/nginx/staticfiles:/etc/nginx/html/
+    # Maps port on the local machine to port on Docker image
+    ports:
+      - 80:80
