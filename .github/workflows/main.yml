@@ -53,5 +53,5 @@ jobs:
           script: |
             cd /home/ubuntu/project/react-django-app
             docker system prune -f
-            docker-compose pull
-            docker-compose up -d --build
+            docker compose pull
+            docker compose up -d --build
