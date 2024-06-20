@@ -52,6 +52,10 @@ jobs:
           key: ${{ secrets.DEPLOYMENT_EC2_KEY }}
           script: |
             cd /home/ubuntu/project/react-django-app
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker rmi $(docker images -q)
+            docker system prune -f
             docker system prune -f
             docker compose pull
             docker compose up -d --build
