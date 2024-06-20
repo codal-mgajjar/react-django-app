@@ -15,7 +15,7 @@ services:
     expose:
       - 5432
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U test"]
       interval: 10s
@@ -39,7 +39,8 @@ services:
     volumes:
       # Copy changes made to the project to your image in real-time.
       - /home/ubuntu/project/react-django-app/server:/app
-    # Handles the command used to run the project in the Docker container.
+      - static-volume:/app/static
+# Handles the command used to run the project in the Docker container.
     command: sh "/app/entrypoint.sh"
 
   frontend:
@@ -65,7 +66,11 @@ services:
       dockerfile: Dockerfile
 
     volumes:
-      - /home/ubuntu/project/react-django-app/nginx/staticfiles:/etc/nginx/html/
+      - static-volume:/etc/nginx/html
     # Maps port on the local machine to port on Docker image
     ports:
       - 80:80
+
+volumes:
+  postgres-data:
+  static-volume:
