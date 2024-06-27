@@ -58,10 +58,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Deploy static site to S3 bucket
-        script: |
+        run: |
         git pull origin main
         aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }} 
-        
 
   deploy-app:
     name: Deploy Application
