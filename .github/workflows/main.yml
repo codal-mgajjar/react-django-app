@@ -39,26 +39,6 @@ jobs:
             sudo usermod -aG docker $USER
             sudo systemctl restart docker
 
-  deploy-frontend:
-    name: Deploy Frontend to S3
-    needs: build
-    runs-on: ubuntu-latest
-    environment: Env
-    steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v3
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
 
   deploy-app:
     name: Deploy Application
@@ -81,3 +61,24 @@ jobs:
             docker system prune -f
             docker compose pull
             docker compose up -d --build
+
+  deploy-frontend:
+    name: Deploy Frontend to S3
+    needs: build
+    runs-on: ubuntu-latest
+    environment: Env
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
