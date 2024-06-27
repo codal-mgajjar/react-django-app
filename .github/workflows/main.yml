@@ -43,6 +43,7 @@ jobs:
     name: Deploy Frontend to S3
     needs: build
     runs-on: ubuntu-latest
+    environment: Env    
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
