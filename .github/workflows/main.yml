@@ -61,6 +61,7 @@ jobs:
         script: |
         git pull origin main
         aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }} 
+        
 
   deploy-app:
     name: Deploy Application
