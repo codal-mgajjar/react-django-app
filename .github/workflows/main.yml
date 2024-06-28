@@ -39,7 +39,6 @@ jobs:
             sudo usermod -aG docker $USER
             sudo systemctl restart docker
 
-
   # deploy-app:
   #   name: Deploy Application
   #   needs: configure-docker
@@ -82,5 +81,6 @@ jobs:
           aws-region: us-east-1
       - name: Deploy static site to S3 bucket
         run: |
+          npm i
           npm run build
           aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
