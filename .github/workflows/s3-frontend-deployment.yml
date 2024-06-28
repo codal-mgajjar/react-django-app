@@ -66,7 +66,7 @@ jobs:
       #     aws s3 sync /home/ubuntu/_work/react-django-app/react-django-app/client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
       - name: Build Frontend
         run: |
-          cd client
+          cd /home/ubuntu/_work/react-django-app/react-django-app/client/
           npm install
           npm run build
       - name: Upload to S3
