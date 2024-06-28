@@ -40,27 +40,27 @@ jobs:
             sudo systemctl restart docker
 
 
-  deploy-app:
-    name: Deploy Application
-    needs: configure-docker
-    runs-on: self-hosted
-    environment: Env
-    steps:
-      - name: Deploy and Run Application
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOYMENT_EC2_HOST_DNS }}
-          username: ${{ secrets.DEPLOYMENT_EC2_USER }}
-          key: ${{ secrets.DEPLOYMENT_EC2_KEY }}
-          script: |
-            cd /home/ubuntu/project/react-django-app
-            git pull origin main
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-            docker rmi $(docker images -q)
-            docker system prune -f
-            docker compose pull
-            docker compose up -d --build
+  # deploy-app:
+  #   name: Deploy Application
+  #   needs: configure-docker
+  #   runs-on: self-hosted
+  #   environment: Env
+  #   steps:
+  #     - name: Deploy and Run Application
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.DEPLOYMENT_EC2_HOST_DNS }}
+  #         username: ${{ secrets.DEPLOYMENT_EC2_USER }}
+  #         key: ${{ secrets.DEPLOYMENT_EC2_KEY }}
+  #         script: |
+  #           cd /home/ubuntu/project/react-django-app
+  #           git pull origin main
+  #           docker stop $(docker ps -a -q)
+  #           docker rm $(docker ps -a -q)
+  #           docker rmi $(docker images -q)
+  #           docker system prune -f
+  #           docker compose pull
+  #           docker compose up -d --build
 
   deploy-frontend:
     name: Deploy Frontend to S3
@@ -82,4 +82,5 @@ jobs:
           aws-region: us-east-1
       - name: Deploy static site to S3 bucket
         run: |
+          npm run build
           aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
