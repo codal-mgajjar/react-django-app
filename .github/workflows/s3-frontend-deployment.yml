@@ -64,7 +64,12 @@ jobs:
       #     npm run build
       #     pwd
       #     aws s3 sync /home/ubuntu/_work/react-django-app/react-django-app/client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
-
+      - name: Install dependencies
+        run: npm install
+      - name: Build app
+        run: |
+          npm run build
+          pwd
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
         with:
