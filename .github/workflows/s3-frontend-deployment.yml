@@ -1,0 +1,61 @@
+name: CI/CD pipeline for S3
+on:
+  push:
+    branches:
+      - s3-deployment
+jobs:
+  build:
+    name: Checkout and Deploy Source Code
+    runs-on: self-hosted
+    environment: Env
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+      - name: Deploy Source Code to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOYMENT_EC2_KEY }}
+          REMOTE_HOST: ${{ secrets.DEPLOY_EC2_HOST }}
+          REMOTE_USER: ${{ secrets.DEPLOYMENT_EC2_USER }}
+          TARGET: /home/ubuntu
+  deploy-app:
+    name: Deploy Backend on EC2
+    needs: build
+    runs-on: self-hosted
+    environment: Env
+    steps:
+      - name: Deploy and Run Application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOYMENT_EC2_HOST_DNS }}
+          username: ${{ secrets.DEPLOYMENT_EC2_USER }}
+          key: ${{ secrets.DEPLOYMENT_EC2_KEY }}
+          script: |
+            cd /home/ubuntu/project/react-django-app
+            git pull origin main
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker rmi $(docker images -q)
+            docker system prune -f
+            docker compose pull
+            docker compose up -d --build
+
+  deploy-frontend:
+    name: Deploy Frontend to S3
+    needs: build
+    runs-on: self-hosted
+    environment: Env
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Deploy static site to S3 bucket
+        run: |
+          npm i
+          npm run build
+          aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}

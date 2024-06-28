@@ -43,23 +43,23 @@ services:
 # Handles the command used to run the project in the Docker container.
     command: sh "/app/entrypoint.sh"
 
-  frontend:
-    container_name: frontend
-    depends_on:
-      backend:
-        condition: service_started
-    build:
-      context: /home/ubuntu/project/react-django-app/client
-      dockerfile: Dockerfile
+  # frontend:
+  #   container_name: frontend
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #   build:
+  #     context: /home/ubuntu/project/react-django-app/client
+  #     dockerfile: Dockerfile
 
-    # Maps port on the local machine to port on Docker image
-    ports:
-      - 3000:3000
+  #   # Maps port on the local machine to port on Docker image
+  #   ports:
+  #     - 3000:3000
 
   nginx:
     container_name: nginx
     depends_on:
-      frontend:
+      backend:
         condition: service_started
     build:
       context: /home/ubuntu/project/react-django-app/nginx
