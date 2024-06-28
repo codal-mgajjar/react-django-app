@@ -32,7 +32,8 @@ jobs:
           key: ${{ secrets.DEPLOYMENT_EC2_KEY }}
           script: |
             cd /home/ubuntu/project/react-django-app
-            git pull origin main
+            git checkout s3-frontend
+            git pull origin s3-frontend
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
             docker rmi $(docker images -q)
