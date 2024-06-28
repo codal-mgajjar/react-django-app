@@ -57,6 +57,9 @@ jobs:
           aws-region: us-east-1
       - name: Deploy static site to S3 bucket
         run: |
+          git fetch --all
+          git checkout s3-frontend
+          git pull origin s3-frontend
           npm i
           npm run build
           aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
