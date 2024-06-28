@@ -2,7 +2,7 @@ name: CI/CD pipeline for S3
 on:
   push:
     branches:
-      - s3-deployment
+      - s3-frontend
 jobs:
   build:
     name: Checkout and Deploy Source Code
