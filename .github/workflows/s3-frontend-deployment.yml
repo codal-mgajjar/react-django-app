@@ -20,7 +20,7 @@ jobs:
           TARGET: /home/ubuntu
   deploy-app:
     name: Deploy Backend on EC2
-    needs: build
+    needs: deploy-frontend
     runs-on: self-hosted
     environment: Env
     steps:
@@ -62,4 +62,5 @@ jobs:
           git pull origin s3-frontend
           npm i
           npm run build
+          pwd
           aws s3 sync ./client/build/ s3://${{ secrets.AWS_S3_BUCKET }}
