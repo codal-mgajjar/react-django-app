@@ -77,16 +77,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test',
-	'USER' : 'test',
-	'PASSWORD' : 'test',
-	'HOST' : 'database',
-	'PORT' : '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'test',
+# 	'USER' : 'test',
+# 	'PASSWORD' : 'test',
+# 	'HOST' : 'database',
+# 	'PORT' : '5432',
+#     }
+# }
 
 
 # Password validation
@@ -137,7 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = [
-    'https://static-hosting-frontend.s3.amazonaws.com'
+    'https://static-hosting-frontend.s3.amazonaws.com',
     'http://localhost:3000',
     'http://3.109.32.30',
     'http://0.0.0.0',
