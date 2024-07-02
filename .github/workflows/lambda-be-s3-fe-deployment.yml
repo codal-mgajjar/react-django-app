@@ -1,8 +1,9 @@
 name: CI/CD pipeline for S3
-# on:
-#   push:
-#     branches:
-#       - s3-frontend
+on:
+  push:
+    branches:
+      - s3-frontend
+
 jobs:
   build:
     name: Checkout and Deploy Source Code
@@ -56,24 +57,20 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   deploy-backend:
-    name: Deploy Backend on EC2
+    name: Deploy Backend to Lambda
     needs: deploy-frontend
     runs-on: self-hosted
     environment: Env
     steps:
-      - name: Deploy and Run Application
-        uses: appleboy/ssh-action@master
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: ${{ secrets.DEPLOYMENT_EC2_HOST_DNS }}
-          username: ${{ secrets.DEPLOYMENT_EC2_USER }}
-          key: ${{ secrets.DEPLOYMENT_EC2_KEY }}
-          script: |
-            cd /home/ubuntu/project/react-django-app
-            git checkout s3-frontend
-            git pull origin s3-frontend
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-            docker rmi $(docker images -q)
-            docker system prune -f
-            docker compose pull
-            docker compose up -d --build
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Lambda
+        run: |
+          cd /home/ubuntu/project/react-django-app/server
+          zip -r function.zip .
+          aws lambda update-function-code --function-name backend-django --zip-file fileb://function.zip
