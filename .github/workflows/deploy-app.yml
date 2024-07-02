@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
+      
       - name: Deploy Source Code to Server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -55,9 +56,9 @@ jobs:
           script: |
             cd /home/ubuntu/project/react-django-app
             git pull origin main
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-            docker rmi $(docker images -q)
+            docker stop $(docker ps -a -q) || true
+            docker rm $(docker ps -a -q) || true
+            docker rmi $(docker images -q) || true
             docker system prune -f
             docker compose pull
             docker compose up -d --build
