@@ -20,4 +20,4 @@ hooks:
   BeforeInstall:
     - location: scripts/deployapp.sh
       timeout: 3000
-      runas: root
+      runas: ubuntu
