@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
-# docker stop $(docker ps -a -q)
-# docker rm $(docker ps -a -q)
-# docker rmi $(docker images -q)
-# docker system prune -f
-# docker compose up -d 
+# Stop all running containers
+docker stop $(docker ps -a -q) || true
+
+# Remove all containers
+docker rm $(docker ps -a -q) || true
+
+# Remove all images
+docker rmi $(docker images -q) || true
+
+# Perform system prune
+docker system prune -f
+
+# Bring up Docker Compose services
+docker compose up -d
