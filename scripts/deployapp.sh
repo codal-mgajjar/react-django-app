@@ -37,4 +37,4 @@ sudo docker system prune -f
 # Build and start the containers
 sudo docker-compose up -d --build
 
-echo "Docker Compose setup completed successfully."
+echo "------------------------------------------------------->>>>>>>>>>>>---------------------------------------------Docker Compose setup completed successfully."
