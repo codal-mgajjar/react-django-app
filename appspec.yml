@@ -11,11 +11,15 @@ permissions:
     group: ubuntu
 
 hooks:
-  BeforeInstall: 
+  BeforeInstall:
     - location: scripts/cleaninstance.sh
       timeout: 300
-      runas: ubuntu
+      runas: root
   AfterInstall:
-    - location: scripts/start.sh
-      timeout: 3000
-      runas: ubuntu
+    - location: scripts/after-start.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/boot.sh
+      timeout: 300
+      runas: root
