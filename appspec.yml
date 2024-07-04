@@ -7,11 +7,11 @@ files:
     overwrite: true
 
 permissions:
-  - object: /home/ubuntu/codepipeline/project/react-django-app
+  - object: scripts/deployapp.sh
     pattern: "**"
     owner: ubuntu
     group: ubuntu
-    mode: 755
+    mode: 777
     type:
       - file
       - directory
