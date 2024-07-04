@@ -1,21 +1,28 @@
-version: 0.0
-os: linux
+#!/bin/bash
 
-files:
-  - source: /
-    destination: /home/ubuntu/codepipeline/project/react-django-app
+# Navigate to the project directory
+cd /home/ubuntu/codepipeline/project/react-django-app
 
-permissions:
-  - object: /home/ubuntu/codepipeline/project/react-django-app
-    owner: ubuntu
-    group: ubuntu
+# Pull the latest changes from the main branch
+git pull origin main
 
-hooks:
-  BeforeInstall: 
-    - location: scripts/cleaninstance.sh
-      timeout: 300
-      runas: ubuntu
-  AfterInstall:
-    - location: scripts/start.sh
-      timeout: 3000
-      runas: ubuntu
+# Update the package repository
+sudo apt-get update
+
+# Install Docker if not installed
+if ! [ -x "$(command -v docker)" ]; then
+  echo "Docker is not installed. Installing Docker..."
+  sudo apt-get install -y docker.io
+fi
+
+# Install Docker Compose if not installed
+if ! [ -x "$(command -v docker-compose)" ]; then
+  echo "Docker Compose is not installed. Installing Docker Compose..."
+  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+fi
+
+# Build and start the containers
+docker-compose up -d --build
+
+echo "Docker Compose setup completed successfully."
