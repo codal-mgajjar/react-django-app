@@ -17,7 +17,7 @@ permissions:
       - directory
 
 hooks:
-  ApplicationStart:
+  BeforeInstall:
     - location: deployapp.sh
       timeout: 3000
       runas: root
