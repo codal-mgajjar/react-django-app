@@ -7,6 +7,6 @@ files:
 file_exists_behaviour: OVERWRITE
 hooks:
   BeforeInstall:
-    - location: scripts/deployapp.sh
+    - location: scriptsss/deployapp.sh
       timeout: 3000
       runas: ubuntu
