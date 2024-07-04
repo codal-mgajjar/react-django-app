@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/codepipeline/project/react-django-app
+permissions:
+  - object: /home/ubuntu/codepipeline/project/react-django-app
+    owner: ubuntu
+    group: ubuntu
+hooks:
+  ApplicationStart:
+    - location: deployapp.sh
+      timeout: 300
+      runas: ubuntu
