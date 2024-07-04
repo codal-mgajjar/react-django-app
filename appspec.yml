@@ -16,6 +16,6 @@ hooks:
       timeout: 300
       runas: ubuntu
   AfterInstall:
-    - location: scripts/deployapp.sh
+    - location: scripts/start.sh
       timeout: 3000
       runas: ubuntu
