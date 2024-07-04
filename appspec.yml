@@ -2,22 +2,16 @@ version: 0.0
 os: linux
 
 files:
-  - source: /home/ubuntu/codepipeline/project/react-django-app
+  - source: /
     destination: /home/ubuntu/codepipeline/project/react-django-app
-    overwrite: true
 
 permissions:
-  - object: scripts/deployapp.sh
-    pattern: "**"
+  - object: /home/ubuntu/codepipeline/project/react-django-app
     owner: ubuntu
     group: ubuntu
-    mode: 777
-    type:
-      - file
-      - directory
 
 hooks:
-  BeforeInstall:
+  AfterInstall:
     - location: scripts/deployapp.sh
       timeout: 3000
       runas: ubuntu
