@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Stop all running containers
-docker stop $(docker ps -a -q) || true
+sudo docker stop $(docker ps -a -q) || true
 
 # Remove all containers
-docker rm $(docker ps -a -q) || true
+sudo docker rm $(docker ps -a -q) || true
 
 # Remove all images
-docker rmi $(docker images -q) || true
+sudo docker rmi $(docker images -q) || true
 
 # Perform system prune
-docker system prune -f
+sudo docker system prune -f
 
 # Bring up Docker Compose services
-docker compose up -d
+sudo docker compose up -d
