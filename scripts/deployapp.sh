@@ -6,35 +6,17 @@ cd /home/ubuntu/codepipeline/project/react-django-app
 # Pull the latest changes from the main branch
 git pull origin main
 
-# Update the package repository
-sudo apt-get update
 
-# Install Docker if not installed
-if ! [ -x "$(command -v docker)" ]; then
-  echo "Docker is not installed. Installing Docker..."
-  sudo apt-get install -y docker.io
-fi
+docker stop $(docker ps -a -q) || true
 
-# Install Docker Compose if not installed
-if ! [ -x "$(command -v docker-compose)" ]; then
-  echo "Docker Compose is not installed. Installing Docker Compose..."
-  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-fi
+# Remove all containers
+docker rm $(docker ps -a -q) || true
 
-# Stop all running Docker containers
-sudo docker stop $(sudo docker ps -a -q)
+# Remove all images
+docker rmi $(docker images -q) || true
 
-# Remove all Docker containers
-sudo docker rm $(sudo docker ps -a -q)
+# Perform system prune
+docker system prune -f
 
-# Remove all Docker images
-sudo docker rmi $(sudo docker images -q)
-
-# Remove all unused Docker objects
-sudo docker system prune -f
-
-# Build and start the containers
-sudo docker-compose up -d --build
-
-echo "------------------------------------------------------->>>>>>>>>>>>---------------------------------------------Docker Compose setup completed successfully."
+# Bring up Docker Compose services
+docker compose up -d
