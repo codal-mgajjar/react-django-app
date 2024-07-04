@@ -7,7 +7,7 @@ files:
     overwrite: true
 
 permissions:
-  - object: /home/ubuntu/codepipeline/project/react-django-app
+  - object: /
     pattern: "**"
     owner: ubuntu
     group: ubuntu
