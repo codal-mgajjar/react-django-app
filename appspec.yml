@@ -18,6 +18,6 @@ permissions:
 
 hooks:
   BeforeInstall:
-    - location: scripts/deployapp.sh
+    - location: scriptsssss/deployapp.sh
       timeout: 3000
       runas: root
