@@ -6,16 +6,6 @@ files:
     destination: /home/ubuntu/codepipeline/project/react-django-app
     overwrite: true
 
-permissions:
-  - object: /
-    pattern: "**"
-    owner: ubuntu
-    group: ubuntu
-    mode: 777
-    type:
-      - file
-      - directory
-
 hooks:
   BeforeInstall:
     - location: scripts/deployapp.sh
