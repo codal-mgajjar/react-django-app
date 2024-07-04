@@ -10,5 +10,5 @@ permissions:
     group: ubuntu
 hooks:
   ApplicationStart:
-    - location: deployapp.sh
+    - location: /home/ubuntu/codepipeline/project/react-django-app/deployapp.sh
       timeout: 3000
