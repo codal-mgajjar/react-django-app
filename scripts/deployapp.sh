@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Navigate to the directory containing the project
-cd /home/ubuntu/codepipeline/project/react-django-app
-
-# Pull the latest changes from the main branch
-git pull origin main
-
-
 docker stop $(docker ps -a -q) || true
 
 # Remove all containers
