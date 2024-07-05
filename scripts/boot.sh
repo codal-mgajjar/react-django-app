@@ -1,5 +1,6 @@
 cd /home/ubuntu/codepipeline/project/react-django-app &&
-sudo docker compose up -d --build
+docker compose build --no-cache &&
+sudo docker compose up -d 
 
 
 
