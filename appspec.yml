@@ -21,6 +21,5 @@ hooks:
       runas: ubuntu
   ApplicationStart:
     - location: scripts/boot.sh
-      timeout: 300
+      timeout: 3000
       runas: ubuntu
-
