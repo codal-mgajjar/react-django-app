@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN rm -rf node_modules package-lock.json build
+RUN rm -rf node_modules package-lock.json
 
 
 RUN yarn install
