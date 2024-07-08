@@ -29,7 +29,7 @@ services:
       db:
         condition: service_healthy
     build:
-      context: /home/ubuntu/project/react-django-app/server
+      context: /home/ubuntu/codepipeline/project/react-django-app/server
       dockerfile: Dockerfile
 
     # Maps port on the local machine to port on Docker image
@@ -38,7 +38,7 @@ services:
 
     volumes:
       # Copy changes made to the project to your image in real-time.
-      - /home/ubuntu/project/react-django-app/server:/app
+      - /home/ubuntu/codepipeline/project/react-django-app/server:/app
       - static-volume:/app/static
 # Handles the command used to run the project in the Docker container.
     command: sh "/app/entrypoint.sh"
@@ -49,7 +49,7 @@ services:
       backend:
         condition: service_started
     build:
-      context: /home/ubuntu/project/react-django-app/client
+      context: /home/ubuntu/codepipeline/project/react-django-app/client
       dockerfile: Dockerfile
 
     # Maps port on the local machine to port on Docker image
@@ -62,7 +62,7 @@ services:
       frontend:
         condition: service_started
     build:
-      context: /home/ubuntu/project/react-django-app/nginx
+      context: /home/ubuntu/codepipeline/project/react-django-app/nginx
       dockerfile: Dockerfile
 
     volumes:
