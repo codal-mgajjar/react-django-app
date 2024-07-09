@@ -9,7 +9,7 @@ const ListUsers = ({ users }) => {
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>Documentssssss</th>
+          <th>Documents</th>
           <th>Phone</th>
           <th>Registration</th>
           <th></th>
